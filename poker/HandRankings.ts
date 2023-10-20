@@ -73,10 +73,23 @@ class HandRankings{
     }
       
     isFourOfAKind(hand:Card[]){
-
+      let cardMap = new Map();
+      for(let card of hand){
+        if(cardMap.has(card.value)){
+          cardMap.get(card.value).push(card);
+        } else {
+          cardMap.set(card.value, [card])
+        }
+      }
+      for(let value = 2; value <= 14; value++){
+        if(cardMap.has(value) && cardMap.get(value).length > 3){
+          return true;
+        }
+      }
+      return false;
     }
     isFullHouse(hand:Card[]){
-
+      
     }
     isFlush(hand:Card[]){
 
