@@ -9,7 +9,7 @@ class Deck {
     }
     setDeck(){
         this.deck = [];
-        for(let value = 1; value <= 14; value++){
+        for(let value = 2; value <= 14; value++){
             for(let suit = 1; suit <= 4; suit++){
                 let newCard:Card = new Card(value, suit);
                 this.deck.push(newCard);
