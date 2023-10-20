@@ -1,26 +1,14 @@
-
-
-class Card{
-    value: number;
-    suit: number;
-
-    constructor(value: number, suit: number){
-       this.value = value; 
-       this.suit = suit;
-    } 
-}
-
+import Card from './Card';
 
 class Deck {
     deck: Card[];
-
-
+    
     constructor(){
-
         this.setDeck();
         this.shuffle();
     }
     setDeck(){
+        this.deck = [];
         for(let value = 1; value <= 14; value++){
             for(let suit = 1; suit <= 4; suit++){
                 let newCard:Card = new Card(value, suit);
@@ -41,11 +29,14 @@ class Deck {
     deal(){
         return this.deck.pop();
     }
+    show(){
+        for(let card of this.deck){
+            console.log({card});
+        }
+    }
+    getSize(){
+        return this.deck.length;
+    }
 }
 
-
-
-
-
-
-module.exports = {Card, Deck};
+export default Deck;
