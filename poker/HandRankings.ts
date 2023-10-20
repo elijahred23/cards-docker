@@ -4,8 +4,8 @@ class HandRankings{
     constructor(){
 
     }
-    isRoyalFlush(hand:Card[]){
-
+    isRoyalFlush(hand: Card[]): boolean{
+        return true;
     }
     isStraightFlush(hand:Card[]){
 
@@ -27,9 +27,6 @@ class HandRankings{
     }
     isTwoPair(hand:Card[]){
 
-    }
-    isHighCard(hand:Card[]){
-        
     }
 }
 
