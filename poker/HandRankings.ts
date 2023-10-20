@@ -71,8 +71,7 @@ class HandRankings{
       
         return false;
     }
-      
-    isFourOfAKind(hand:Card[]){
+    createCardMap(hand:Card[]):Map<number, Card[]>{
       let cardMap = new Map();
       for(let card of hand){
         if(cardMap.has(card.value)){
@@ -81,14 +80,21 @@ class HandRankings{
           cardMap.set(card.value, [card])
         }
       }
-      for(let value = 2; value <= 14; value++){
-        if(cardMap.has(value) && cardMap.get(value).length > 3){
+      return cardMap;
+    }
+    isFourOfAKind(hand:Card[]):boolean {
+      let cardMap = this.createCardMap(hand);
+
+      for (let value = 2; value <= 14; value++) {
+        const cardArray = cardMap.get(value);
+        if (cardArray !== undefined && cardArray.length > 3) {
           return true;
         }
       }
       return false;
     }
     isFullHouse(hand:Card[]){
+      let cardMap = this.createCardMap(hand);
       
     }
     isFlush(hand:Card[]){
