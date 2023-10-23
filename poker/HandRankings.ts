@@ -5,29 +5,23 @@ class HandRankings {
 
     }
     isRoyalFlush(hand: Card[]): boolean {
-        const suitCards: { [suit: number]: Card[] } = {
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-        };
-
-        for (const card of hand) {
-            if (card.value >= 10) {
-                suitCards[card.suit].push(card);
-            }
-        }
-
-        if (![1, 2, 3, 4].some((suit) => suitCards[suit].length === 5)) {
+        let suitCards = this.createSuitMap(hand, 9);
+        console.log({suitCards});
+        if (![1, 2, 3, 4].some((suit) => {
+            let suitArray = suitCards.get(suit);
+            return suitArray != undefined && suitArray.length === 5;
+            } 
+        )) {
             return false;
-        }
-
+        } 
         for (let suit = 1; suit <= 4; suit++) {
-            if (suitCards[suit].length !== 5) {
+            let suitArray = suitCards.get(suit);
+
+            if (suitArray !== undefined && suitArray.length !== 5) {
                 continue;
             }
 
-            const sortedCards = suitCards[suit].sort((a, b) => a.value - b.value);
+            const sortedCards = suitArray !== undefined ? suitArray.sort((a, b) => a.value - b.value): [];
 
             if (sortedCards[0].value === 10 && sortedCards[4].value === 14) {
                 return true; // Found a royal flush!
@@ -82,6 +76,21 @@ class HandRankings {
         }
         return cardMap;
     }
+    createSuitMap(hand: Card[], greaterThan: number = 0): Map<number, Card[]>  {
+        let suitMap = new Map();
+        for(let card of hand){
+            if(card.value > greaterThan){
+                if(suitMap.has(card.suit)){
+                    suitMap.get(card.suit).push(card);
+                } else{ 
+                    suitMap.set(card.suit, [card]);
+                }
+            }
+        }
+
+        return suitMap;
+    }
+
     isFourOfAKind(hand: Card[]): boolean {
         let cardMap = this.createCardMap(hand);
 
