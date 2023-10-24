@@ -6,7 +6,7 @@ class HandRankings {
     }
     isRoyalFlush(hand: Card[]): boolean {
         let suitCards = this.createSuitMap(hand, 9);
-        console.log({suitCards});
+
         if (![1, 2, 3, 4].some((suit) => {
             let suitArray = suitCards.get(suit);
             return suitArray != undefined && suitArray.length === 5;
@@ -32,25 +32,19 @@ class HandRankings {
     }
 
     isStraightFlush(hand: Card[]): boolean {
-        const suitCards: { [suit: number]: Card[] } = {
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-        };
-
-        for (const card of hand) {
-            suitCards[card.suit].push(card);
-        }
-
+        const suitCards = this.createCardMap(hand);
         // Find the suit with at least 5 cards
-        const straightFlushSuit = [1, 2, 3, 4].find((suit) => suitCards[suit].length >= 5);
+        const straightFlushSuit = [1, 2, 3, 4].find((suit) => {
+            let suitArray = suitCards.get(suit);
+            return suitArray !== undefined && suitArray.length >= 5;           
+        } );
 
         if (!straightFlushSuit) {
             return false; // No suit with 5 or more cards, no straight flush
         }
 
-        const sortedCards = suitCards[straightFlushSuit].sort((a, b) => a.value - b.value);
+        let straightFlushSuitedCardsArray = suitCards.get(straightFlushSuit);
+        const sortedCards = straightFlushSuitedCardsArray != undefined ? straightFlushSuitedCardsArray.sort((a, b) => a.value - b.value) : [];
 
         for (let i = 0; i < sortedCards.length - 4; i++) {
             if (
@@ -134,10 +128,31 @@ class HandRankings {
     }
 
     isFlush(hand: Card[]) {
-
+        let suitCards = this.createSuitMap(hand);
+        for(let suit = 1; suit <=4; suit++){
+            let suitArray = suitCards.get(suit);
+            if(suitArray != undefined && suitArray.length > 4){
+                return true;
+            }
+        }
+        return false;
     }
     isStraight(hand: Card[]) {
-
+        let sortedHand = hand.sort((a,b)=> a.value - b.value);
+        let straightCounter = 0;
+        for(let index = 0; index < sortedHand.length - 1; index++){
+            let currentCard = sortedHand[index];
+            let nextCard = sortedHand[index+1];
+            if(currentCard.value === nextCard.value){
+               continue; 
+            }
+            if(currentCard.value + 1 == nextCard.value){
+                straightCounter++;
+            } else {
+                straightCounter = 0;
+            }
+        }
+        return straightCounter >= 5;
     }
     isThreeOfAKind(hand: Card[]) {
 
