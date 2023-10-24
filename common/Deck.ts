@@ -27,7 +27,12 @@ class Deck {
         this.deck = tempDeck;
     }
     deal(){
-        return this.deck.pop();
+        let card = this.deck.pop();
+        if(card === undefined){
+            this.setDeck();
+            card = this.deck.pop();
+        }
+        return card;
     }
     show(){
         for(let card of this.deck){
